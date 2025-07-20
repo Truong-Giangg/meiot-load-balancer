@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-config
+data:
+  nginx.conf: |
+    events {}
+    http {
+      server {
+        listen 80;
+        server_name rancher.meiot.live;
+
+        location / {
+          proxy_pass http://rancher-service:80;
+          proxy_set_header Host $host;
+          proxy_set_header X-Real-IP $remote_addr;
+        }
+      }
+
+      server {
+        listen 80;
+        server_name jenkins.meiot.live;
+
+        location / {
+          proxy_pass http://jenkins-service:8080;
+          proxy_set_header Host $host;
+          proxy_set_header X-Real-IP $remote_addr;
+        }
+      }
+    }
+
