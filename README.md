@@ -20,3 +20,14 @@ helm install jenkins-release jenkins/jenkins  \
   --set controller.admin.username=admin  \
   --set controller.admin.password=secret
 ```
+Create jenkins pv and pvc, then reinstall jenkins
+```
+helm uninstall jenkins-release -n jenkins
+
+helm install jenkins-release jenkins/jenkins \
+  --namespace jenkins \
+  --set persistence.existingClaim=jenkins-release \
+  --set controller.admin.username=admin \
+  --set controller.admin.password=secret
+
+```
